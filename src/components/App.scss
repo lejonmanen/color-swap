@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
 }
+$app-bg: #454652;
 
 .App {
     text-align: center;
@@ -8,7 +9,7 @@
     flex-direction: column;
     height: 100vh;
     font-size: 1.2em;
-    background: #454652;
+    background: $app-bg;
 }
 main {
     display: flex;
@@ -72,8 +73,32 @@ main {
     justify-content: center;
     /* font-size: calc(10px + 2vmin); */
     color: white;
+    padding: 1em 0em;
 }
 
 .App-link {
     color: #61dafb;
 }
+
+.settings-icon {
+    position: absolute;
+    top: 0.25em;
+    right: 0.35em;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: 1.3em;
+    transition: transform 0.3s linear;
+
+    &:hover {
+        transform: rotate(90deg) translate(0.1em,0em);
+        // translateY(0.2em) translateX(-0.2em) scale(1.2);
+        cursor: pointer;
+    }
+}
+/*.settings-icon:hover {
+    transform: rotate(30deg);
+    // translateY(0.2em) translateX(-0.2em) scale(1.2);
+    cursor: pointer;
+}*/

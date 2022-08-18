@@ -1,12 +1,13 @@
 import { useState, useRef } from 'react'
 import { randomizeMap, findArea, colorChange, checkVictory } from '../utils'
 import Settings from './Settings'
-import './App.css'
+import './App.scss'
 
 const PLAYING = 1, VICTORY = 2
 
 function App() {
     const [turn, setTurn] = useState(0)
+    const [score, setScore] = useState(0)
     const [showSettings, setShowSettings] = useState(false)
     const [state, setState] = useState(PLAYING)
     const [history, setHistory] = useState([])
@@ -60,9 +61,9 @@ function App() {
         <div className="App">
         <header className="App-header">
             Color swap
-            <button onClick={() => setShowSettings(s => !s)}> ⚙️ </button>
+            <button className="settings-icon" onClick={() => setShowSettings(s => !s)}> ⚙️ </button>
         </header>
-        TODO: 1) gear button absolute position, 2) findArea does not find entire area all the time, 3) seeded random to save level codes, 4) load level by code
+        TODO: 2) findArea does not find entire area all the time, 3) seeded random to save level codes, 4) load level by code
         {showSettings ? (
             <main>
             <Settings />
