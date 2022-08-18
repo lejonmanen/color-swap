@@ -1,7 +1,24 @@
+@use "sass:color";
+
 * {
     box-sizing: border-box;
 }
 $app-bg: #454652;
+$button-bg: #EFEFEF;
+$button-bg-hover: #CFC8BC;
+$color-button-border: darkgray;
+
+@function darken($color) {
+    @return color.scale($color, $blackness: 40%);
+}
+@function lighten($color) {
+    @return color.scale($color, $lightness: 25%);
+}
+
+$c0: #FFE1E9;
+$c1: #A6A2F6;
+$c2: #AF8336;
+$c3: #65BD6F;
 
 .App {
     text-align: center;
@@ -14,9 +31,11 @@ $app-bg: #454652;
 main {
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
     justify-content: center;
     padding: 1em;
+}
+.separator-top {
+    border-top: 2px solid #E5E5E3;
 }
 .grid {
     width: 100%;
@@ -26,23 +45,31 @@ main {
     justify-content: center;
 }
 .grid > div {
-    /* width: 1em;
-    height: 1em; */
     /* border: 1px solid lightgray; */
-    transition: all 0.4s;
+    transition: all 1.0s;
 }
 .grid > div:hover {
     /* border-radius: 4px; */
     /* border: 1px solid black; */
-    opacity: 0.8;
+    // opacity: 0.8;
     cursor: default;
 }
-.grid .owned {
-    opacity: 0.8;
-    border: 1px solid black;
+.grid > :not(.owned) {
+    // opacity: 0.8;
+    border: 1px solid $app-bg;
 }
+.grid .c0 { background-color: $c0; border-color: darken($c0); }
+.grid .c1 { background-color: $c1; border-color: darken($c1); }
+.grid .c2 { background-color: $c2; border-color: darken($c2); }
+.grid .c3 { background-color: $c3; border-color: darken($c3); }
+.grid .c0.owned:not(:hover) { background-color: lighten($c0); }
+.grid .c1.owned:not(:hover) { background-color: lighten($c1); }
+.grid .c2.owned:not(:hover) { background-color: lighten($c2); }
+.grid .c3.owned:not(:hover) { background-color: lighten($c3); }
 
 .App .color-section {
+    margin: 1em 0em 0.5em 0em;
+    // The color buttons container
     /* display: flex;
     flex-direction: row; */
 }
@@ -52,7 +79,7 @@ main {
     margin: 0.2em 0.4em;
     border-radius: 0.3em;
     padding: 0.2em 1.2em;
-    border: 1px solid darkgray;
+    border: 1px solid $color-button-border;
     transition: 0.4s all;
 }
 .App .color-button:hover {
@@ -63,6 +90,20 @@ main {
 .App .color-button:disabled {
     /* border: 1px none; */
     opacity: 0.2;
+}
+.ui-button {
+    font-size: 1.0em;
+    padding: 0.2em 1.1em;
+    border-radius: 0.3em;
+    margin: 0.2em;
+    transition: all 0.2s;
+    background-color: $button-bg;
+
+    &:hover {
+        cursor: pointer;
+        transform: translateY(2px);
+        background-color: $button-bg-hover;
+    }
 }
 
 .App-header {

@@ -6,6 +6,7 @@ import './App.scss'
 const PLAYING = 1, VICTORY = 2
 
 function App() {
+    const [seed, setSeed] = useState(1)
     const [turn, setTurn] = useState(0)
     const [score, setScore] = useState(0)
     const [showSettings, setShowSettings] = useState(false)
@@ -18,27 +19,28 @@ function App() {
     const [lastColor, setLastColor] = useState(matrix.current.get(startX, startY)[0])
 
     function randomMap() {
-        return randomizeMap(palette.length, SIZEX, SIZEY, startX, startY)
+        return randomizeMap(palette.length, SIZEX, SIZEY, startX, startY, seed)
     }
 
     const pickColor = c => {
         // console.log('Chose color ', c);
-        let area = findArea(matrix.current, startX, startY)
-        // console.log('pickColor area', area);
-        colorChange(matrix.current, area, c)
-        // console.log('pickColor 2');
+        const p = matrix.current.get(startX, startY)
+        let swapped = findArea(matrix.current, startX, startY, c)
+        let newScore = score + swapped**2
+        setScore(s => newScore)
         setLastColor(c)
         let thisTurn = turn
         setTurn(t => t + 1)
 
         if( checkVictory(matrix.current) ) {
             setState(VICTORY)
-            history.push(`Won in ${thisTurn + 1} moves.`)
+            history.push(`Won in ${thisTurn + 1} moves. Score: ${newScore}`)
         }
     }
 
     const newGame = () => {
         matrix.current = randomMap()
+        pickColor(matrix.current.get(startX, startY)[0])
         setState(PLAYING)
         setTurn(0)
     }
@@ -51,6 +53,7 @@ function App() {
                 }
             }
         }
+        setLastColor(-1); //matrix.current.get(startX, startY)[0])
         setState(PLAYING)
         setTurn(0)
     }
@@ -63,7 +66,7 @@ function App() {
             Color swap
             <button className="settings-icon" onClick={() => setShowSettings(s => !s)}> ⚙️ </button>
         </header>
-        TODO: 2) findArea does not find entire area all the time, 3) seeded random to save level codes, 4) load level by code
+        TODO: 1) settings: seed, sizex+y, <br/>2) level selection,<br/> 3) remember level scores, <br/>4) load level by code
         {showSettings ? (
             <main>
             <Settings />
@@ -72,7 +75,7 @@ function App() {
             <main>
             <section className="grid"  style={gridStyle}>
                 {matrix.current.data.map(([c, owned], i) => (
-                    <div key={i} className={owned?'owned':''} style={{ backgroundColor: palette[c] }} onClick={null}> </div>
+                    <div key={i} className={`c${c} ` + (owned?'owned':'')} onClick={null}> </div>
                 ))}
             </section>
 
@@ -83,16 +86,17 @@ function App() {
             </section>
 
             <section>
-            {turn} moves
+            {turn} moves. Score: {score}
             {state===VICTORY && (
                 <><br /> You won! <br/>
-                <button onClick={newGame}> Start new game </button>
+                <button className="ui-button" onClick={newGame}> Start new game </button>
                 {/*<button onClick={restart}> Restart </button>*/}
                 </>
             )}
             </section>
 
-            <section>
+
+            <section className="separator-top">
             {history.map((h, i) => (
                 <p key={i}> {h} </p>
             ))}
