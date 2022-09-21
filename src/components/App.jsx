@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useStore } from '../store'
 import { randomizeMap, findArea, colorChange, checkVictory } from '../utils'
 import Settings from './Settings'
 import './App.scss'
@@ -13,13 +14,17 @@ function App() {
     const [state, setState] = useState(PLAYING)
     const [history, setHistory] = useState([])
     const [palette, setPalette] = useState(['#FFE1E9', '#A6A2F6', '#AF8336', '#65BD6F'])
-    const SIZEX=7, SIZEY=10, SIZEEM='1.8em'
+    const SIZEX = useStore(state => state.sizex)
+    const SIZEY = useStore(state => state.sizey)
+    const SIZEEM = useStore(state => state.sizeem)
     const startX = Math.floor(SIZEX / 2), startY = Math.floor(SIZEY / 2)
     const matrix = useRef(randomMap())
     const [lastColor, setLastColor] = useState(matrix.current.get(startX, startY)[0])
 
-    function randomMap() {
-        return randomizeMap(palette.length, SIZEX, SIZEY, startX, startY, seed)
+    function randomMap(sx=SIZEX, sy=SIZEY) {
+        // Have to repeat because of closure and Settings component
+        const startX = Math.floor(SIZEX / 2), startY = Math.floor(SIZEY / 2)
+        return randomizeMap(palette.length, sx, sy, startX, startY, seed)
     }
 
     const pickColor = c => {
@@ -38,9 +43,12 @@ function App() {
         }
     }
 
-    const newGame = () => {
-        matrix.current = randomMap()
+    const newGame = (sx=SIZEX, sy=SIZEY) => {
+        matrix.current = randomMap(sx, sy)
+        const startX = Math.floor(sx / 2), startY = Math.floor(sy / 2)
+        console.log('DEBUG', sx, sy);
         pickColor(matrix.current.get(startX, startY)[0])
+        setShowSettings(false)
         setState(PLAYING)
         setTurn(0)
     }
@@ -66,12 +74,13 @@ function App() {
             Color swap
             <button className="settings-icon" onClick={() => setShowSettings(s => !s)}> ⚙️ </button>
         </header>
-        TODO: 1) settings: seed, sizex+y, <br/>2) level selection,<br/> 3) remember level scores, <br/>4) load level by code
-        {showSettings ? (
+        TODO: 1) settings: seed, num colors, <br/>2) level selection,<br/> 3) remember level scores, <br/>4) load level by code, <br/>5) CSS animate selected area, <br/>6) bug: coloring can wrap end of line? <br/>7) bug: start positions when changing size
+        {showSettings && (
             <main>
-            <Settings />
+            <Settings newGame={newGame} />
             </main>
-        ) : (
+        )}
+        {(
             <main>
             <section className="grid"  style={gridStyle}>
                 {matrix.current.data.map(([c, owned], i) => (

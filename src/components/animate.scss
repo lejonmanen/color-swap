@@ -1,0 +1,43 @@
+@use "sass:color";
+
+@function darken($color) {
+    @return color.scale($color, $blackness: 40%);
+}
+@function lighten($color) {
+    @return color.scale($color, $lightness: 25%);
+}
+
+$c0: #FFE1E9;
+$c1: #A6A2F6;
+$c2: #AF8336;
+$c3: #65BD6F;
+
+.grid .c0 { background-color: $c0; border-color: darken($c0); }
+.grid .c1 { background-color: $c1; border-color: darken($c1); }
+.grid .c2 { background-color: $c2; border-color: darken($c2); }
+.grid .c3 { background-color: $c3; border-color: darken($c3); }
+.grid .c0.owned:not(:hover) { background-color: lighten($c0); }
+.grid .c1.owned:not(:hover) { background-color: lighten($c1); }
+.grid .c2.owned:not(:hover) { background-color: lighten($c2); }
+.grid .c3.owned:not(:hover) { background-color: lighten($c3); }
+.grid .c0.owned { animation: c0 1s linear 0s infinite alternate; }
+.grid .c1.owned { animation: c1 1s linear 0s infinite alternate; }
+.grid .c2.owned { animation: c2 1s linear 0s infinite alternate; }
+.grid .c3.owned { animation: c3 1s linear 0s infinite alternate; }
+
+@keyframes c0 {
+    from { background-color: $c0; }
+    to { background-color: lighten($c0); }
+}
+@keyframes c1 {
+    from { background-color: $c1; }
+    to { background-color: lighten($c1); }
+}
+@keyframes c2 {
+    from { background-color: $c2; }
+    to { background-color: lighten($c2); }
+}
+@keyframes c3 {
+    from { background-color: $c3; }
+    to { background-color: lighten($c3); }
+}

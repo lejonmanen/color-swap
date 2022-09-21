@@ -1,4 +1,5 @@
 @use "sass:color";
+@use "./animate";
 
 * {
     box-sizing: border-box;
@@ -8,23 +9,12 @@ $button-bg: #EFEFEF;
 $button-bg-hover: #CFC8BC;
 $color-button-border: darkgray;
 
-@function darken($color) {
-    @return color.scale($color, $blackness: 40%);
-}
-@function lighten($color) {
-    @return color.scale($color, $lightness: 25%);
-}
-
-$c0: #FFE1E9;
-$c1: #A6A2F6;
-$c2: #AF8336;
-$c3: #65BD6F;
 
 .App {
     text-align: center;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     font-size: 1.2em;
     background: $app-bg;
 }
@@ -58,14 +48,6 @@ main {
     // opacity: 0.8;
     border: 1px solid $app-bg;
 }
-.grid .c0 { background-color: $c0; border-color: darken($c0); }
-.grid .c1 { background-color: $c1; border-color: darken($c1); }
-.grid .c2 { background-color: $c2; border-color: darken($c2); }
-.grid .c3 { background-color: $c3; border-color: darken($c3); }
-.grid .c0.owned:not(:hover) { background-color: lighten($c0); }
-.grid .c1.owned:not(:hover) { background-color: lighten($c1); }
-.grid .c2.owned:not(:hover) { background-color: lighten($c2); }
-.grid .c3.owned:not(:hover) { background-color: lighten($c3); }
 
 .App .color-section {
     margin: 1em 0em 0.5em 0em;
